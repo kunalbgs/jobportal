@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+<body>
+<div class="container mt-5">
+    <h2>Post a New Job</h2>
+    <form th:action="@{/job/post}" method="post" th:object="${job}" class="mx-auto" style="max-width: 500px;">
+        <input type="text" th:field="*{title}" id="title" class="form-control mb-3" placeholder="Job Title" required>
+        <textarea th:field="*{description}" id="description" class="form-control mb-3" placeholder="Job Description" rows="5" required></textarea>
+        <input type="text" th:field="*{location}" id="location" class="form-control mb-3" placeholder="Location" required>
+        <input type="number" th:field="*{salary}" id="salary" class="form-control mb-3" placeholder="Salary" required>
+        <button type="submit" class="btn btn-success w-100">Post Job</button>
+    </form>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

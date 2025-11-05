@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+<body>
+<div class="container mt-5">
+    <h2>Welcome to Job Portal Dashboard</h2>
+    <p class="lead">Choose an action:</p>
+    <ul>
+        <li><a th:href="@{/job/list}">View Jobs</a></li>
+        <li><a th:href="@{/job/post}">Post a Job</a></li>
+        <li><a th:href="@{/application/apply}">Apply for a Job</a></li>
+    </ul>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

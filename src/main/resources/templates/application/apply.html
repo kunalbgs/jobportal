@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Apply for Job</h2>
+
+    <form th:action="@{/application/submit}" method="post" th:object="${application}" class="mx-auto" style="max-width: 500px;">
+
+        <!-- Hidden Job ID -->
+        <input type="hidden" th:field="*{jobId}">
+
+        <!-- Applicant Name -->
+        <div class="mb-3">
+            <label for="applicantName" class="form-label">Your Name</label>
+            <input type="text" th:field="*{applicantName}" id="applicantName" class="form-control" placeholder="Enter your name" required>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" th:field="*{email}" id="email" class="form-control" placeholder="Enter your email" required>
+        </div>
+
+        <!-- Cover Letter -->
+        <div class="mb-3">
+            <label for="coverLetter" class="form-label">Cover Letter</label>
+            <textarea th:field="*{coverLetter}" id="coverLetter" class="form-control" placeholder="Write your cover letter" rows="5" required></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100">Submit Application</button>
+    </form>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

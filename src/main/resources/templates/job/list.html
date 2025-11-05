@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+<body>
+<div class="container mt-5">
+    <h2>Available Jobs</h2>
+    <div th:each="job : ${jobs}" class="card mb-3">
+        <div class="card-body">
+            <h5 th:text="${job.title}"></h5>
+            <p th:text="${job.description}"></p>
+            <a th:href="@{'/application/apply/' +
