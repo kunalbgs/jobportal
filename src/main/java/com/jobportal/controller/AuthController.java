@@ -1,88 +1,92 @@
-//package com.jobportal.controller;
-//
-//import com.jobportal.dto.UserDTO;
-//import com.jobportal.entity.User;
-//import com.jobportal.mapper.UserMapper;
-//import com.jobportal.service.AuthService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
-//
-//@RestController
-//@RequestMapping("/api/auth")
-//public class AuthController {
-//
-//    @Autowired
-//    private AuthService authService;
-//
-//    @PostMapping("/register")
-//    public ResponseEntity<?> register(@RequestBody UserDTO userDto) {
-//        User saved = authService.register(userDto);
-//        return ResponseEntity.ok(UserMapper.toDto(saved));
-//    }
-//
-//    @PostMapping("/login")
-//    public ResponseEntity<?> login(@RequestBody UserDTO loginDto) {
-//        User user = authService.authenticate(loginDto.getEmail(), loginDto.getPassword());
-//        if (user == null) return ResponseEntity.status(401).body("Invalid credentials");
-//        return ResponseEntity.ok(UserMapper.toDto(user));
-//    }
-//}
-
 package com.jobportal.controller;
 
 import com.jobportal.dto.UserDTO;
 import com.jobportal.service.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
 
-    // === GET: Login Page ===
     @GetMapping("/login")
     public String loginPage(Model model) {
-        model.addAttribute("error", null); // clear previous error if any
         return "auth/login";
     }
 
-    // === POST: Login Form Submit ===
-    @PostMapping("/login")
-    public String loginSubmit(@RequestParam String username,
-                              @RequestParam String password,
-                              @RequestParam String role,
-                              Model model) {
-        boolean success = authService.login(username, password);
-        if (success) {
-            return "redirect:/dashboard";
-        } else {
+    @PostMapping("/login-process")
+    public String loginProcess(@RequestParam String username,
+                               @RequestParam String password,
+                               Model model) {
+        if (!authService.login(username, password)) {
             model.addAttribute("error", "Invalid username or password");
             return "auth/login";
         }
+        return "redirect:/dashboard";
     }
 
-    // === GET: Register Page ===
     @GetMapping("/register")
     public String registerPage(Model model) {
         model.addAttribute("user", new UserDTO());
         return "auth/register";
     }
 
-    // === POST: Register Form Submit ===
     @PostMapping("/register")
     public String registerSubmit(@ModelAttribute("user") UserDTO user, Model model) {
-        boolean success = authService.register(user);
-        if (success) {
-            return "redirect:/auth/login";
-        } else {
-            model.addAttribute("error", "Registration failed. Username or email may already exist.");
+        if (!authService.register(user)) {
+            model.addAttribute("error", "User already exists!");
             return "auth/register";
         }
+        return "redirect:/auth/login?registered";
+    }
+
+    // Forgot + OTP
+    @GetMapping("/forgot-password")
+    public String forgotPage() {
+        return "auth/forgot-password";
+    }
+
+    @PostMapping("/forgot-password/send-otp")
+    public String sendOtp(@RequestParam String email, Model model) {
+        if (!authService.emailExists(email)) {
+            model.addAttribute("error", "Email not found!");
+            return "auth/forgot-password";
+        }
+        authService.sendOtp(email);
+        model.addAttribute("email", email);
+        model.addAttribute("stage", "otp");
+        return "auth/forgot-password";
+    }
+
+    @PostMapping("/forgot-password/verify-otp")
+    public String verifyOtp(@RequestParam String email,
+                            @RequestParam String otp, Model model) {
+        if (!authService.verifyOtp(email, otp)) {
+            model.addAttribute("email", email);
+            model.addAttribute("stage", "otp");
+            model.addAttribute("error", "Invalid OTP!");
+            return "auth/forgot-password";
+        }
+        model.addAttribute("email", email);
+        model.addAttribute("stage", "reset");
+        return "auth/forgot-password";
+    }
+
+    @PostMapping("/forgot-password/reset")
+    public String reset(@RequestParam String email,
+                        @RequestParam String password,
+                        Model model) {
+        if (!authService.resetPassword(email, password)) {
+            model.addAttribute("email", email);
+            model.addAttribute("stage", "reset");
+            model.addAttribute("error", "Something went wrong!");
+            return "auth/forgot-password";
+        }
+        return "redirect:/auth/login?reset";
     }
 }

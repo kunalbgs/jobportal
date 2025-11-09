@@ -1,28 +1,28 @@
 package com.jobportal.entity;
 
+import com.jobportal.constant.Role;
 import jakarta.persistence.*;
 import lombok.Data;
-import com.jobportal.constant.Role;
 
-@Entity
-@Table(name = "users")
+@Entity @Table(name="users")
 @Data
 public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Make sure name is exactly "username" as used in mappers
-    @Column(nullable = false, unique = true)
+    @Column(nullable=false, unique=true)
     private String username;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable=false, unique=true)
     private String email;
 
-    private String password;
+    private String password;               // may be null for OAuth users
 
-    // Role is stored as enum in DB
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role;                     // APPLICANT/EMPLOYER/ADMIN
+
+    private String provider;               // google/linkedin/local
+    private String providerId;             // provider unique id
+    private String name;                   // display name
+    private String picture;                // avatar URL
 }

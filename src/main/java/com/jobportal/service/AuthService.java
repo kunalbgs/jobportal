@@ -1,75 +1,71 @@
-//package com.jobportal.service;
-//
-//import com.jobportal.entity.User;
-//import com.jobportal.dto.UserDTO;
-//import com.jobportal.mapper.UserMapper;
-//import com.jobportal.repository.UserRepository;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.Optional;
-//
-//@Service
-//public class AuthService {
-//
-//    @Autowired
-//    private UserRepository userRepository;
-//
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
-//
-//    public User register(UserDTO userDto) {
-//        User user = UserMapper.toEntity(userDto);
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        return userRepository.save(user);
-//    }
-//
-//    public User authenticate(String email, String rawPassword) {
-//        Optional<User> optionalUser = userRepository.findByEmail(email);
-//
-//        if (optionalUser.isPresent()) {
-//            User user = optionalUser.get();
-//            if (passwordEncoder.matches(rawPassword, user.getPassword())) {
-//                return user;
-//            }
-//        }
-//
-//        return null;
-//    }
-//}
-
-
-
 package com.jobportal.service;
 
+import com.jobportal.constant.Role;
 import com.jobportal.dto.UserDTO;
 import com.jobportal.entity.User;
 import com.jobportal.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
-    public boolean login(String username, String password) {
-        User user = userRepository.findByUsername(username).orElse(null);
-        if(user != null && user.getPassword().equals(password)) {
-            return true;
-        }
-        return false;
-    }
+    // simple in-memory OTP store (replace with DB/redis for prod)
+    private final ConcurrentHashMap<String,String> otpStore = new ConcurrentHashMap<>();
 
     public boolean register(UserDTO dto) {
-        if(userRepository.findByUsername(dto.getUsername()).isPresent()) return false;
-        User user = new User();
-        user.setUsername(dto.getUsername());
-        user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
-        userRepository.save(user);
+        if (userRepository.findByUsername(dto.getUsername()).isPresent()) return false;
+        if (userRepository.findByEmail(dto.getEmail()).isPresent()) return false;
+
+        User u = new User();
+        u.setUsername(dto.getUsername());
+        u.setEmail(dto.getEmail());
+        u.setPassword(passwordEncoder.encode(dto.getPassword()));
+        u.setRole(dto.getRole() != null
+                ? Role.valueOf(dto.getRole().trim().toUpperCase())
+                : Role.APPLICANT);
+        u.setProvider("local");
+        userRepository.save(u);
+        return true;
+    }
+
+    public boolean login(String username, String rawPassword) {
+        Optional<User> opt = userRepository.findByUsername(username);
+        if (opt.isEmpty()) return false;
+        return passwordEncoder.matches(rawPassword, opt.get().getPassword());
+    }
+
+    public boolean emailExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    public String sendOtp(String email) {
+        String otp = String.valueOf(100000 + (int)(Math.random()*900000));
+        otpStore.put(email, otp);
+        emailService.send(email, "Password Reset OTP", "Your OTP: " + otp);
+        return otp;
+    }
+
+    public boolean verifyOtp(String email, String otp) {
+        return otp.equals(otpStore.get(email));
+    }
+
+    public boolean resetPassword(String email, String newPassword) {
+        User u = userRepository.findByEmail(email).orElse(null);
+        if (u == null) return false;
+        u.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(u);
+        otpStore.remove(email);
         return true;
     }
 }

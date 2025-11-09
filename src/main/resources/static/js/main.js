@@ -1,69 +1,55 @@
-document.addEventListener('DOMContentLoaded', () => {
-    validateLoginForm();
-    validateRegisterForm();
-});
+// ✅ Slide Panel Open
+function openEmailPanel() {
+    const panel = document.getElementById("emailPanel");
+    panel.setAttribute("aria-hidden", "false");
+}
 
+// ✅ Slide Panel Close
+function closeEmailPanel() {
+    const panel = document.getElementById("emailPanel");
+    panel.setAttribute("aria-hidden", "true");
+}
+
+// ✅ Toggle Password Visibility
+function togglePassword() {
+    const pass = document.getElementById("password");
+    pass.type = pass.type === "password" ? "text" : "password";
+}
+//
+// // ✅ Google Click
+// function googleLogin() {
+//     alert("✅ Google Login Coming Soon (Backend Required)");
+// }
+//
+// // ✅ LinkedIn Click
+// function linkedinLogin() {
+//     alert("✅ LinkedIn Login Coming Soon (Backend Required)");
+// }
+
+
+// ✅ Login Form Validation
 function validateLoginForm() {
-    const loginForm = document.querySelector('form[action="/auth/login"]') ||
-        document.querySelector('form[th\\:action="@{/auth/login}"]');
+    const form = document.getElementById("loginForm");
+    if (!form) return;
 
-    if (!loginForm) return;
-
-    loginForm.addEventListener('submit', (event) => {
-        const username = getValue('username');
-        const password = getValue('password');
-        const role = getValue('role');
+    form.addEventListener("submit", (e) => {
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const role = document.getElementById("role").value.trim();
 
         if (!username || !password || !role) {
-            alert("⚠️ All fields are required: Username, Password, and Role.");
-            event.preventDefault();
+            alert("⚠️ All fields are required.");
+            e.preventDefault();
             return;
         }
 
         if (password.length < 6) {
             alert("🔒 Password must be at least 6 characters.");
-            event.preventDefault();
+            e.preventDefault();
         }
     });
 }
 
-function validateRegisterForm() {
-    const registerForm = document.querySelector('form[action="/auth/register"]') ||
-        document.querySelector('form[th\\:action="@{/auth/register}"]');
-
-    if (!registerForm) return;
-
-    registerForm.addEventListener('submit', (event) => {
-        const username = getValue('username');
-        const email = getValue('email');
-        const password = getValue('password');
-        const role = getValue('role');
-
-        if (!username || !email || !password || !role) {
-            alert("⚠️ Please fill in all required fields.");
-            event.preventDefault();
-            return;
-        }
-
-        if (!validateEmail(email)) {
-            alert("📧 Invalid email format.");
-            event.preventDefault();
-            return;
-        }
-
-        if (password.length < 6) {
-            alert("🔒 Password must be at least 6 characters.");
-            event.preventDefault();
-        }
-    });
-}
-
-function getValue(id) {
-    const field = document.getElementById(id);
-    return field ? field.value.trim() : '';
-}
-
-function validateEmail(email) {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-}
+document.addEventListener("DOMContentLoaded", () => {
+    validateLoginForm();
+});

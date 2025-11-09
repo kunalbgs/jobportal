@@ -2,8 +2,8 @@ package com.jobportal.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import com.jobportal.constant.ApplicationStatus;
-import java.util.Date;
+import org.hibernate.annotations.CreationTimestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "applications")
@@ -15,16 +15,12 @@ public class Application {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "applicant_id", nullable = false)
     private User applicant;
 
     @ManyToOne
-    @JoinColumn(name = "job_id", nullable = false)
     private Job job;
 
-    @Enumerated(EnumType.STRING)
-    private ApplicationStatus status;
+    @CreationTimestamp     // ✅ Auto-created timestamp
+    private LocalDateTime appliedAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date appliedAt;
 }

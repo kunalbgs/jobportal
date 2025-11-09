@@ -1,25 +1,186 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head th:replace="fragments/header :: header"></head>-->
+<!--<link rel="stylesheet" th:href="@{/css/style.css}">-->
+<!--<script defer th:src="@{/js/main.js}"></script>-->
+<!--</head>-->
+
+<!--<body>-->
+
+<!--&lt;!&ndash; ✅ Landing Card &ndash;&gt;-->
+<!--<div class="auth-landing">-->
+<!--    <div class="auth-card">-->
+<!--        <h1>Welcome to Job Portal</h1>-->
+<!--        <p>Use your email or another service to continue for FREE</p>-->
+
+<!--        &lt;!&ndash; ✅ GOOGLE OAuth &ndash;&gt;-->
+<!--        <a class="social-btn" th:href="@{/oauth2/authorization/google}">-->
+<!--            <img th:src="@{/images/google.png}" alt="Google"> Continue with Google-->
+<!--        </a>-->
+
+<!--        &lt;!&ndash; ✅ LINKEDIN OAuth &ndash;&gt;-->
+<!--        <a class="social-btn" th:href="@{/oauth2/authorization/linkedin}">-->
+<!--            <img th:src="@{/images/linkedin.png}" alt="LinkedIn"> Continue with LinkedIn-->
+<!--        </a>-->
+
+<!--        &lt;!&ndash; ✅ EMAIL Login &ndash;&gt;-->
+<!--        <button type="button" class="social-btn email-cta" onclick="openEmailPanel()">-->
+<!--            <img th:src="@{/images/mail.png}" alt="Email"> Continue with Email-->
+<!--        </button>-->
+
+<!--        <p class="tiny-note">-->
+<!--            Don’t have an account?-->
+<!--            <a th:href="@{/auth/register}">Sign up</a>-->
+<!--        </p>-->
+
+<!--        <p class="terms">-->
+<!--            By signing in, you accept the-->
+<!--            <a href="#">Terms of Service</a> and-->
+<!--            <a href="#">Privacy Policy</a>.-->
+<!--        </p>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; ✅ Slide-in Email Panel &ndash;&gt;-->
+<!--<div id="emailPanel" class="email-panel" aria-hidden="true">-->
+
+<!--    <div class="email-panel__content">-->
+<!--        <button class="close-x" onclick="closeEmailPanel()">✕</button>-->
+
+<!--        <h2>Continue with Email</h2>-->
+
+<!--        <form id="loginForm" th:action="@{/auth/login-process}" method="post">-->
+
+<!--            &lt;!&ndash; Username &ndash;&gt;-->
+<!--            <input type="text" id="username" name="username"-->
+<!--                   class="form-control mb-3" placeholder="Username or Email" required>-->
+
+<!--            &lt;!&ndash; Password &ndash;&gt;-->
+<!--            <div class="password-wrapper mb-2">-->
+<!--                <input type="password" id="password" name="password"-->
+<!--                       class="form-control" placeholder="Password" required>-->
+<!--                <span class="toggle-password" onclick="togglePassword()">👁️</span>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Role &ndash;&gt;-->
+<!--            <select id="role" name="role" class="form-select mb-3" required>-->
+<!--                <option value="">&#45;&#45; Select Role &#45;&#45;</option>-->
+<!--                <option value="APPLICANT">Applicant</option>-->
+<!--                <option value="EMPLOYER">Employer</option>-->
+<!--                <option value="ADMIN">Admin</option>-->
+<!--            </select>-->
+
+<!--            &lt;!&ndash; ✅ Email Login Button &ndash;&gt;-->
+<!--            <button type="submit" class="btn-primary w-100">Login</button>-->
+
+<!--            <div class="panel-links">-->
+<!--                <a th:href="@{/auth/forgot-password}">Forgot Password?</a>-->
+<!--                <span>•</span>-->
+<!--                <a th:href="@{/auth/register}">Create an account</a>-->
+<!--            </div>-->
+
+<!--        </form>-->
+<!--    </div>-->
+
+<!--    <div class="email-panel__overlay" onclick="closeEmailPanel()"></div>-->
+<!--</div>-->
+
+<!--<div th:replace="fragments/footer :: footer"></div>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header"></head>
 <link rel="stylesheet" th:href="@{/css/style.css}">
-<script th:src="@{/js/main.js}"></script>
+<script defer th:src="@{/js/main.js}"></script>
+</head>
 
 <body>
-<div class="container mt-5">
-    <h2>Login</h2>
-    <form th:action="@{/auth/login}" method="post">
-        <input type="text" id="username" name="username" class="form-control mb-3" placeholder="Username or Email" required>
-        <input type="password" id="password" name="password" class="form-control mb-3" placeholder="Password" required>
-        <select id="role" name="role" class="form-select mb-3" required>
-            <option value="">-- Select Role --</option>
-            <option value="APPLICANT">Applicant</option>
-            <option value="EMPLOYER">Employer</option>
-            <option value="ADMIN">Admin</option>
-        </select>
-        <button type="submit" class="btn btn-primary w-100">Login</button>
-        <p class="text-center mt-3">Don’t have an account? <a th:href="@{/auth/register}">Register here</a></p>
-    </form>
+
+<!-- ===================================== -->
+<!-- ✅ LANDING CARD -->
+<!-- ===================================== -->
+<div class="auth-landing">
+    <div class="auth-card">
+
+        <h1>Welcome to Job Portal</h1>
+        <p>Use your email or another service to continue for FREE</p>
+
+        <!-- ✅ GOOGLE LOGIN -->
+        <a href="/oauth2/authorization/google" class="social-btn">
+            <img th:src="@{/images/google.png}" alt="Google"> Continue with Google
+        </a>
+
+        <!-- ✅ LINKEDIN LOGIN -->
+        <a href="/oauth2/authorization/linkedin" class="social-btn">
+            <img th:src="@{/images/linkedin.png}" alt="LinkedIn"> Continue with LinkedIn
+        </a>
+
+        <!-- ✅ EMAIL LOGIN BUTTON -->
+        <button type="button" class="social-btn email-cta" onclick="openEmailPanel()">
+            <img th:src="@{/images/mail.png}" alt="Mail"> Continue with Email
+        </button>
+
+        <p class="tiny-note">
+            Don’t have an account?
+            <a th:href="@{/auth/register}">Sign up</a>
+        </p>
+
+        <p class="terms">
+            By signing in, you accept the
+            <a href="#">Terms of Service</a> and acknowledge our
+            <a href="#">Privacy Policy</a>.
+        </p>
+    </div>
 </div>
+
+
+<!-- ===================================== -->
+<!-- ✅ SLIDE-IN EMAIL PANEL -->
+<!-- ===================================== -->
+<div id="emailPanel" class="email-panel" aria-hidden="true">
+
+    <div class="email-panel__content">
+        <button class="close-x" onclick="closeEmailPanel()">✕</button>
+        <h2>Continue with Email</h2>
+
+        <form id="loginForm" th:action="@{/auth/login-process}" method="post">
+
+            <input type="text" id="username" name="username"
+                   class="form-control mb-3" placeholder="Username or Email" required>
+
+            <div class="password-wrapper mb-2">
+                <input type="password" id="password" name="password" class="form-control"
+                       placeholder="Password" required>
+                <span class="toggle-password" onclick="togglePassword()">👁️</span>
+            </div>
+
+            <select id="role" name="role" class="form-select mb-3" required>
+                <option value="">-- Select Role --</option>
+                <option value="APPLICANT">Applicant</option>
+                <option value="EMPLOYER">Employer</option>
+                <option value="ADMIN">Admin</option>
+            </select>
+
+            <button type="submit" class="btn-primary w-100">Login</button>
+
+            <div class="panel-links">
+                <a th:href="@{/auth/forgot-password}">Forgot Password?</a>
+                <span>•</span>
+                <a th:href="@{/auth/register}">Create an account</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- overlay -->
+    <div class="email-panel__overlay" onclick="closeEmailPanel()"></div>
+</div>
+
+
 <div th:replace="fragments/footer :: footer"></div>
+
 </body>
 </html>

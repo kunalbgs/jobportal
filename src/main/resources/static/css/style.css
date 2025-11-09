@@ -1,8 +1,3 @@
-
-
-
-
-
 /* =========================================
    GLOBAL STYLES
 ========================================= */
@@ -30,7 +25,7 @@ body {
 }
 
 /* =========================================
-   COMMON CONTAINER STYLING
+   COMMON FORM CONTAINERS
 ========================================= */
 .container, .register-container {
     background: #fff;
@@ -42,7 +37,6 @@ body {
     animation: fadeIn 0.8s ease-in-out;
 }
 
-/* Headings */
 h2 {
     text-align: center;
     font-weight: 600;
@@ -51,7 +45,7 @@ h2 {
 }
 
 /* =========================================
-   INPUTS
+   INPUT FIELDS
 ========================================= */
 .form-control, .form-select {
     width: 100%;
@@ -69,13 +63,55 @@ h2 {
     outline: none;
 }
 
-/* Placeholder */
 ::placeholder {
     color: #999;
 }
 
 /* =========================================
-   BUTTONS (Login + Register same look)
+   ✅ PASSWORD FIELD + EYE ICON
+========================================= */
+.password-wrapper {
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.password-wrapper input {
+    padding-right: 50px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #444;
+}
+
+.toggle-password:hover {
+    color: #0072ff;
+}
+
+/* ✅ “Get password” text */
+.get-password {
+    text-align: right;
+    margin-top: 2px;
+}
+
+.get-password a {
+    color: #ff6f00;
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.get-password a:hover {
+    text-decoration: underline;
+}
+
+/* =========================================
+   BUTTONS
 ========================================= */
 .btn-primary, .btn-register, .btn-success {
     background: linear-gradient(90deg, #0072ff, #00c6ff);
@@ -95,7 +131,6 @@ h2 {
     transform: translateY(-2px);
 }
 
-/* Links below form */
 .text-center {
     text-align: center;
     margin-top: 15px;
@@ -112,7 +147,7 @@ h2 {
 }
 
 /* =========================================
-   HEADER STYLING (Center logo + right nav)
+   HEADER
 ========================================= */
 header {
     background: linear-gradient(90deg, #0072ff, #00c6ff);
@@ -124,7 +159,6 @@ header {
     z-index: 1000;
 }
 
-/* Flex layout for header */
 .header-container {
     display: flex;
     align-items: center;
@@ -134,7 +168,6 @@ header {
     position: relative;
 }
 
-/* Center logo exactly */
 .logo {
     position: absolute;
     left: 50%;
@@ -143,41 +176,29 @@ header {
     font-weight: 700;
     text-transform: uppercase;
     color: #fff;
-    letter-spacing: 1px;
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
-/* Navigation links - right side */
 header nav ul {
     list-style: none;
     display: flex;
     gap: 25px;
-    margin: 0;
-    padding: 0;
-}
-
-header nav ul li {
-    display: inline;
 }
 
 header nav ul li a {
     color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 16px;
     padding: 6px 14px;
     border-radius: 8px;
     transition: all 0.3s ease;
 }
 
-/* Hover effects */
 header nav ul li a:hover {
     background-color: rgba(255, 255, 255, 0.2);
     color: #ffeb3b;
 }
 
 /* =========================================
-   FOOTER STYLING
+   FOOTER
 ========================================= */
 footer {
     background: linear-gradient(90deg, #00c6ff, #0072ff);
@@ -187,58 +208,394 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
-    font-size: 14px;
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* =========================================
-   REGISTRATION FORM ADD-ONS
+   ✅ UNSTOP LOGIN LANDING
 ========================================= */
-.form-group {
-    margin-bottom: 18px;
+.auth-landing {
+    min-height: calc(100vh - 140px);
+    display: grid;
+    place-items: center;
+    padding: 24px;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 500;
-    color: #444;
+.auth-card {
+    width: 100%;
+    max-width: 520px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 10px 28px rgba(0,0,0,.15);
+    padding: 36px 28px;
+    text-align: center;
+    animation: fadeIn .6s ease;
 }
 
-.terms {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    font-size: 14px;
+.auth-card h1 { margin-bottom: 12px; color:#1f2937; }
+.auth-card p { color:#6b7280; margin-bottom: 18px; }
+
+.social-btn {
+    width: 100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 10px;
+    border:1px solid #e5e7eb;
+    background:#f9fafb;
+    color:#111827;
+    padding: 12px 14px;
+    border-radius: 999px;
+    font-weight:600;
+    margin: 10px 0;
+    transition: transform .08s ease, background .2s ease;
 }
 
-.terms input {
-    margin-right: 8px;
+.social-btn img { width:22px; height:22px; }
+
+.social-btn:hover {
+    background:#eef2ff;
+    transform: translateY(-1px);
+}
+
+.email-cta { background:#fff; }
+
+/* =========================================
+   ✅ SLIDE-IN EMAIL PANEL
+========================================= */
+.email-panel {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1200;
+}
+
+.email-panel[aria-hidden="false"] { pointer-events: auto; }
+
+.email-panel__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.35);
+    opacity: 0;
+    transition: opacity .25s ease;
+}
+
+.email-panel[aria-hidden="false"] .email-panel__overlay {
+    opacity: 1;
+}
+
+.email-panel__content {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 420px;
+    max-width: 100%;
+    background: #fff;
+    padding: 28px;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform .28s ease;
+    box-shadow: -10px 0 24px rgba(0,0,0,.12);
+}
+
+.email-panel[aria-hidden="false"] .email-panel__content {
+    transform: translateX(0);
+}
+
+.close-x {
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+    position: absolute;
+    right: 18px;
+    top: 14px;
+    opacity: .6;
 }
 
 /* =========================================
-   RESPONSIVE DESIGN
+   ✅ DASHBOARD
 ========================================= */
+.dash-wrap {
+    max-width: 1100px;
+    margin: 28px auto 90px;
+    padding: 0 16px;
+}
+
+.kpi-grid {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.kpi-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.08);
+}
+
+.kpi-num {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.two-col {
+    margin-top: 22px;
+    display: grid;
+    gap: 18px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.panel {
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.08);
+}
+
+/* =========================================
+   ✅ RESPONSIVE
+========================================= */
+@media (max-width: 900px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .two-col { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 600px) {
     .container, .register-container {
-        width: 90%;
-        padding: 30px 25px;
+        width: 92%;
+        padding: 32px 25px;
     }
-
     .logo {
         position: static;
         transform: none;
         margin-bottom: 10px;
     }
-
     .header-container {
         flex-direction: column;
         text-align: center;
-        padding: 10px;
     }
-
     header nav ul {
         flex-direction: column;
         gap: 10px;
     }
+    .email-panel {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+    }
+
+    .email-panel[aria-hidden="false"] {
+        pointer-events: auto;
+    }
+
+    .email-panel__overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,.4);
+        opacity: 0;
+        transition: opacity .25s;
+    }
+
+    .email-panel[aria-hidden="false"] .email-panel__overlay {
+        opacity: 1;
+    }
+
+    .email-panel__content {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 420px;
+        max-width: 100%;
+        height: 100%;
+        background: #fff;
+        padding: 28px;
+        box-shadow: -4px 0 14px rgba(0,0,0,.15);
+        transform: translateX(100%);
+        transition: transform .25s ease;
+    }
+
+    .email-panel[aria-hidden="false"] .email-panel__content {
+        transform: translateX(0);
+    }
+    /* HEADER UPGRADE */
+    .upgraded-header {
+        background: #ffffff;
+        padding: 14px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #f0f0f0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .brand-logo {
+        font-size: 26px;
+        font-weight: 700;
+        color: #2a59e0;
+        text-decoration: none;
+    }
+
+    .nav-menu {
+        display: flex;
+        align-items: center;
+    }
+
+    .user-menu {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    /* Dashboard Button */
+    .nav-btn {
+        padding: 8px 16px;
+        background: #eef2ff;
+        color: #3b5bdb;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+    .nav-btn:hover {
+        background: #dce4ff;
+        color: #2a4acc;
+    }
+
+    /* Logout Button */
+    .logout-btn {
+        padding: 8px 16px;
+        background: #ffe3e3;
+        color: #c92a2a;
+        border-radius: 10px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+    .logout-btn:hover {
+        background: #ffc9c9;
+        color: #a51111;
+    }
+
+    /* Register button for logged-out users */
+    .register-btn {
+        padding: 8px 18px;
+        background: #3b5bdb;
+        color: white;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+    .register-btn:hover {
+        background: #2443c1;
+    }
+    /* =========================================
+       ✅ HEADER (NEW UPGRADED CLEAN VERSION)
+    ========================================= */
+
+    .upgraded-header {
+        background: #ffffff;
+        padding: 14px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #f0f0f0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .brand-logo {
+        font-size: 26px;
+        font-weight: 700;
+        color: #2a59e0 !important;
+        text-decoration: none;
+    }
+
+    .nav-menu {
+        display: flex;
+        align-items: center;
+    }
+
+    .user-menu {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    /* ✅ Base Pill Button */
+    .btn-pill {
+        padding: 8px 18px;
+        font-weight: 600;
+        border-radius: 30px;
+        text-decoration: none;
+        font-size: 15px;
+        transition: 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    /* ✅ Dashboard button */
+    .btn-dashboard {
+        background: #eef2ff;
+        color: #3b5bdb;
+    }
+
+    .btn-dashboard:hover {
+        background: #dce4ff;
+    }
+
+    /* ✅ Logout button */
+    .btn-logout {
+        background: #ffe3e3;
+        color: #c92a2a;
+    }
+
+    .btn-logout:hover {
+        background: #ffc9c9;
+    }
+
+    /* ✅ Login button */
+    .btn-login {
+        background: #eef2ff;
+        color: #3b5bdb;
+    }
+
+    .btn-login:hover {
+        background: #dce4ff;
+    }
+
+    /* ✅ Register button */
+    .btn-register {
+        background: #3b5bdb;
+        color: white;
+    }
+
+    .btn-register:hover {
+        background: #2443c1;
+    }
+
+    /* ✅ Responsive for Mobile */
+    @media(max-width: 600px) {
+        .upgraded-header {
+            flex-direction: column;
+            gap: 10px;
+            padding: 18px 16px;
+        }
+
+        .user-menu {
+            gap: 10px;
+        }
+
+        .btn-pill {
+            padding: 7px 14px;
+            font-size: 14px;
+        }
+    }
+
 }

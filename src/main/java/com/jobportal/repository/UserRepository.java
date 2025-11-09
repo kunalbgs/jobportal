@@ -2,12 +2,10 @@ package com.jobportal.repository;
 
 import com.jobportal.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
-@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
-    Optional<User> findByEmail(String email);       // already exists
-    Optional<User> findByUsername(String username); // **ADD THIS LINE**
+    Optional<User> findByUsername(String username);
+    Optional<User> findByEmail(String email);
+    Optional<User> findByProviderAndProviderId(String provider, String providerId);
 }

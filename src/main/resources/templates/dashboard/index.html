@@ -1,16 +1,93 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header"></head>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
 <body>
-<div class="container mt-5">
-    <h2>Welcome to Job Portal Dashboard</h2>
-    <p class="lead">Choose an action:</p>
-    <ul>
-        <li><a th:href="@{/job/list}">View Jobs</a></li>
-        <li><a th:href="@{/job/post}">Post a Job</a></li>
-        <li><a th:href="@{/application/apply}">Apply for a Job</a></li>
-    </ul>
+
+<div class="dash-wrap">
+
+    <!-- HEADER SECTION -->
+    <div class="dash-header">
+        <h2>Dashboard</h2>
+        <p class="muted">Welcome back <span th:text="${displayName}">User</span>!</p>
+    </div>
+
+    <!-- KPI SECTION -->
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <h3>Total Jobs</h3>
+            <div class="kpi-num" th:text="${stats.totalJobs}">0</div>
+            <p class="kpi-sub">Open positions</p>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Total Applications</h3>
+            <div class="kpi-num" th:text="${stats.totalApplications}">0</div>
+            <p class="kpi-sub">Submitted</p>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Shortlisted</h3>
+            <div class="kpi-num" th:text="${stats.shortlisted}">0</div>
+            <p class="kpi-sub">Under review</p>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Interviews</h3>
+            <div class="kpi-num" th:text="${stats.interviews}">0</div>
+            <p class="kpi-sub">Scheduled</p>
+        </div>
+    </div>
+
+    <!-- TWO COLUMN SECTION -->
+    <div class="two-col">
+
+        <!-- Recent Jobs Panel -->
+        <div class="panel">
+            <div class="panel-head">
+                <h3>Recent Jobs</h3>
+                <a th:href="@{/job/list}">View all</a>
+            </div>
+
+            <ul class="simple-list">
+                <li th:each="job: ${recentJobs}">
+                    <span>
+                        <strong th:text="${job.title}">Job Title</strong>
+                        <small class="muted" th:text="${job.company}">Company</small>
+                    </span>
+                    <small class="pill">Open</small>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Recent Applications Panel -->
+        <div class="panel">
+            <div class="panel-head">
+                <h3>Recent Applications</h3>
+                <a th:href="@{/application/list}">View all</a>
+            </div>
+
+            <ul class="simple-list">
+
+                <li th:each="a: ${recentApplications}">
+                    <span>
+                        <strong th:text="${a.job.title}">Backend Engineer</strong>
+                        <small class="muted" th:text="${a.status}">APPLIED</small>
+                    </span>
+
+                    <small class="muted"
+                           th:text="${#temporals.format(a.appliedAt, 'dd MMM')}">
+                        05 Nov
+                    </small>
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
 </div>
+
 <div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

@@ -1,9 +1,14 @@
 package com.jobportal.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "jobs")
+@Data
 public class Job {
 
     @Id
@@ -11,43 +16,13 @@ public class Job {
     private Long id;
 
     private String title;
-    private String description;
-    private String location;
+
     private String company;
 
-    // ✅ Getters and Setters
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private String description;
 
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    private String location;
 
-    public String getDescription() {
-        return description;
-    }
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-    public void setCompany(String company) {
-        this.company = company;
-    }
+    @CreationTimestamp
+    private LocalDateTime createdAt;  // ✅ REQUIRED FOR RECENT JOBS
 }
