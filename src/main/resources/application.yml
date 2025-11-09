@@ -1,20 +1,23 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 spring:
   application:
     name: jobportal
 
   datasource:
-    url: jdbc:mysql://localhost:3306/jobportal
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=require
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
   thymeleaf:
     cache: false
@@ -24,8 +27,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: kunalkumarbuj@gmail.com
-    password: rgpybduwmhhaaztl     # ✅ Gmail App Password (correct)
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
@@ -36,8 +39,8 @@ spring:
         registration:
 
           google:
-            client-id: 225479004129-dp0ods82ohcaliuu90or0sjvkctmcica.apps.googleusercontent.com
-            client-secret: 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
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/google"
             scope:
@@ -45,8 +48,8 @@ spring:
               - profile
 
           linkedin:
-            client-id: 77o7ozu9cikr2a
-            client-secret: WPL_AP1.z791P5dODiz50TdZ.Bp68nw==
+            client-id: ${LINKEDIN_CLIENT_ID}
+            client-secret: ${LINKEDIN_CLIENT_SECRET}
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/linkedin"
             scope:
@@ -58,9 +61,3 @@ spring:
             authorization-uri: https://www.linkedin.com/oauth/v2/authorization
             token-uri: https://www.linkedin.com/oauth/v2/accessToken
             user-info-uri: https://api.linkedin.com/v2/me?projection=(id,localizedFirstName,localizedLastName,profilePicture(displayImage~:playableStreams))
-            user-name-attribute: id
-
-logging:
-  level:
-    org.springframework: INFO
-    com.jobportal: DEBUG
