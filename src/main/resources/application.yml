@@ -6,10 +6,10 @@ spring:
     name: jobportal
 
   datasource:
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=require
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
     username: ${DB_USER}
-    password: ${DB_PASSWORD}
-    driver-class-name: org.postgresql.Driver
+    password: ${DB_PASS}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
@@ -17,7 +17,7 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
 
   thymeleaf:
     cache: false
@@ -27,8 +27,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
+    username: ${MAIL_USER}
+    password: ${MAIL_PASS}
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
@@ -61,3 +61,4 @@ spring:
             authorization-uri: https://www.linkedin.com/oauth/v2/authorization
             token-uri: https://www.linkedin.com/oauth/v2/accessToken
             user-info-uri: https://api.linkedin.com/v2/me?projection=(id,localizedFirstName,localizedLastName,profilePicture(displayImage~:playableStreams))
+            user-name-attribute: id

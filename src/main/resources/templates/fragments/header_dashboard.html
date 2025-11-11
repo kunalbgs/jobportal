@@ -1,0 +1,51 @@
+<div th:fragment="header">
+
+    <header class="dash-header-bar">
+        <a th:href="@{/}" class="logo">JobPortal</a>
+
+        <!-- RIGHT SIDE USER SECTION (Only for Logged-in users) -->
+        <div class="user-section" th:if="${#authentication.principal != null}">
+
+            <!-- Notification Icon -->
+            <span class="icon-bell">🔔</span>
+
+            <!-- Profile Image -->
+            <img th:src="${picture}" class="profile-avatar" onclick="toggleProfilePanel()">
+        </div>
+
+        <!-- LOGIN/REGISTER (NOT LOGGED IN) -->
+        <div th:if="${#authentication.principal == null}">
+            <a th:href="@{/auth/login}">Login</a>
+            <a th:href="@{/auth/register}" class="btn-primary">Register</a>
+        </div>
+
+    </header>
+
+    <!-- ✅ PROFILE SLIDE PANEL -->
+    <div id="profilePanel" class="profile-panel">
+
+        <div class="panel-header">
+            <h3>Profile</h3>
+            <span class="close-btn" onclick="toggleProfilePanel()">✖</span>
+        </div>
+
+        <div class="panel-body">
+            <div class="profile-pic-ring">
+                <img th:src="${picture}">
+            </div>
+
+            <h2 th:text="${displayName}">User Name</h2>
+            <p class="email" th:text="${email}">email@example.com</p>
+
+            <a th:href="@{/profile}" class="btn-view-profile">View Profile →</a>
+            <a th:href="@{/auth/logout}" class="btn-logout">Logout</a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function toggleProfilePanel() {
+        document.getElementById("profilePanel").classList.toggle("open");
+    }
+</script>
