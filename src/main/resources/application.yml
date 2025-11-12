@@ -41,7 +41,7 @@ spring:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_SECRET}
             authorization-grant-type: authorization_code
-            redirect-uri: "https://jobportal-production-19e0.up.railway.app/login/oauth2/code/google"
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope:
               - email
               - profile
@@ -50,7 +50,7 @@ spring:
             client-id: ${LINKEDIN_CLIENT_ID}
             client-secret: ${LINKEDIN_CLIENT_SECRET}
             authorization-grant-type: authorization_code
-            redirect-uri: "https://jobportal-production-19e0.up.railway.app/login/oauth2/code/linkedin"
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope:
               - r_liteprofile
               - r_emailaddress
