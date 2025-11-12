@@ -1,5 +1,6 @@
 server:
   port: ${PORT:8080}
+  forward-headers-strategy: framework  # ✅ ensures HTTPS detection behind Railway proxy
 
 spring:
   application:
@@ -41,6 +42,7 @@ spring:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_SECRET}
             authorization-grant-type: authorization_code
+            # ✅ Dynamic redirect URI (works both local & Railway)
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope:
               - email
@@ -50,6 +52,7 @@ spring:
             client-id: ${LINKEDIN_CLIENT_ID}
             client-secret: ${LINKEDIN_CLIENT_SECRET}
             authorization-grant-type: authorization_code
+            # ✅ Dynamic redirect URI (fixes redirect_uri_mismatch automatically)
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope:
               - r_liteprofile
@@ -59,5 +62,6 @@ spring:
           linkedin:
             authorization-uri: https://www.linkedin.com/oauth/v2/authorization
             token-uri: https://www.linkedin.com/oauth/v2/accessToken
-            user-info-uri: https://api.linkedin.com/v2/me?projection=(id,localizedFirstName,localizedLastName,profilePicture(displayImage~:playableStreams))
+            # ✅ Use plain user-info URI (projection removed to avoid “Bummer” error)
+            user-info-uri: https://api.linkedin.com/v2/me
             user-name-attribute: id
